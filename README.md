@@ -2,7 +2,7 @@
 
 基於 Flask 的 RAG (Retrieval-Augmented Generation) 智能問答系統，整合 Pinecone 向量資料庫和 Gemini AI 模型。
 
-DEMO: https://d6530614201f.ngrok.app/
+DEMO: https://e44037629d7b.ngrok.app/
 
 ## 📊 專案簡報
 
