@@ -72,7 +72,10 @@ class ExamSystem {
         files.forEach(file => {
             const option = document.createElement('option');
             option.value = file;
-            option.textContent = file.replace('.txt', '');
+            // 根據文件類型顯示不同的名稱
+            const isPdf = file.toLowerCase().endsWith('.pdf');
+            const displayName = file.replace(/\.(txt|pdf)$/i, '');
+            option.textContent = `${displayName} (${isPdf ? 'PDF' : 'TXT'})`;
             this.fileSelect.appendChild(option);
         });
     }

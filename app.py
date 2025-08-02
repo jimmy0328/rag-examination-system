@@ -5,6 +5,8 @@ from rag_system import RAGSystem
 import json
 import random
 from typing import List, Dict, Any
+import PyPDF2
+import pdfplumber
 
 # 載入環境變數
 load_dotenv()
@@ -78,9 +80,9 @@ def query():
 
 @app.route('/exam/files', methods=['GET'])
 def list_exam_files():
-    """取得 data 目錄下所有 txt 檔案名稱"""
+    """取得 data 目錄下所有支援的檔案名稱（txt 和 pdf）"""
     try:
-        files = [f for f in os.listdir('data') if f.endswith('.txt')]
+        files = [f for f in os.listdir('data') if f.endswith(('.txt', '.pdf'))]
         return jsonify({'success': True, 'files': files})
     except Exception as e:
         return jsonify({'success': False, 'error': str(e)})
@@ -98,8 +100,9 @@ def generate_exam():
         if not os.path.exists(file_path):
             return jsonify({'success': False, 'error': '檔案不存在'})
         # 讀取檔案內容
-        with open(file_path, 'r', encoding='utf-8') as f:
-            file_text = f.read()
+        file_text = read_file_content(file_path)
+        if not file_text:
+            return jsonify({'success': False, 'error': '檔案內容為空或讀取失敗'})
         # 切分內容
         chunks = [file_text[i:i+500] for i in range(0, len(file_text), 500)]
         if len(chunks) > num_questions:
@@ -227,6 +230,43 @@ def grade_exam():
     except Exception as e:
         return jsonify({'success': False, 'error': f'評分時發生錯誤: {str(e)}'})
 
+def read_file_content(file_path: str) -> str:
+    """根據檔案類型讀取檔案內容"""
+    file_extension = os.path.splitext(file_path)[1].lower()
+    
+    if file_extension == '.pdf':
+        try:
+            content = ""
+            # 嘗試使用 pdfplumber
+            try:
+                with pdfplumber.open(file_path) as pdf:
+                    for page in pdf.pages:
+                        page_text = page.extract_text()
+                        if page_text:
+                            content += page_text + "\n"
+            except Exception as e:
+                # 備用方案：使用 PyPDF2
+                with open(file_path, 'rb') as file:
+                    pdf_reader = PyPDF2.PdfReader(file)
+                    for page in pdf_reader.pages:
+                        page_text = page.extract_text()
+                        if page_text:
+                            content += page_text + "\n"
+            return content.strip()
+        except Exception as e:
+            print(f"讀取 PDF 檔案時發生錯誤: {str(e)}")
+            return ""
+    elif file_extension == '.txt':
+        try:
+            with open(file_path, 'r', encoding='utf-8') as f:
+                return f.read()
+        except Exception as e:
+            print(f"讀取 TXT 檔案時發生錯誤: {str(e)}")
+            return ""
+    else:
+        print(f"不支援的檔案格式: {file_extension}")
+        return ""
+
 @app.route('/read/content', methods=['POST'])
 def read_content():
     """讀取檔案內容"""
@@ -242,8 +282,10 @@ def read_content():
             return jsonify({'success': False, 'error': '檔案不存在'})
         
         # 讀取檔案內容
-        with open(file_path, 'r', encoding='utf-8') as f:
-            content = f.read()
+        content = read_file_content(file_path)
+        
+        if not content:
+            return jsonify({'success': False, 'error': '檔案內容為空或讀取失敗'})
         
         return jsonify({
             'success': True,

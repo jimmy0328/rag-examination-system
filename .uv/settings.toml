@@ -1,0 +1,5 @@
+[venv]
+prompt = "rag-examination-system"
+
+[install]
+resolution = "lowest-compatible" 

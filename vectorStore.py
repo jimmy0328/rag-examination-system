@@ -13,6 +13,8 @@ from sentence_transformers import SentenceTransformer
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from pinecone import Pinecone, ServerlessSpec, CloudProvider, AwsRegion
 import time
+import PyPDF2
+import pdfplumber
 
 # 3. 設定 API 金鑰和環境變數
 from dotenv import load_dotenv
@@ -122,6 +124,70 @@ def read_text_file(file_path: str) -> str:
         print(f"讀取檔案時發生錯誤: {str(e)}")
         return ""
 
+# 10.1. 讀取 PDF 檔案函式
+def read_pdf_file(file_path: str) -> str:
+    """
+    讀取 PDF 檔案
+    
+    Args:
+        file_path: PDF 檔案路徑
+    
+    Returns:
+        PDF 內容文字
+    """
+    try:
+        content = ""
+        
+        # 嘗試使用 pdfplumber (更好的文字提取)
+        try:
+            with pdfplumber.open(file_path) as pdf:
+                for page in pdf.pages:
+                    page_text = page.extract_text()
+                    if page_text:
+                        content += page_text + "\n"
+            print(f"使用 pdfplumber 成功讀取 PDF: {file_path}")
+        except Exception as e:
+            print(f"pdfplumber 讀取失敗，嘗試使用 PyPDF2: {str(e)}")
+            
+            # 備用方案：使用 PyPDF2
+            with open(file_path, 'rb') as file:
+                pdf_reader = PyPDF2.PdfReader(file)
+                for page in pdf_reader.pages:
+                    page_text = page.extract_text()
+                    if page_text:
+                        content += page_text + "\n"
+            print(f"使用 PyPDF2 成功讀取 PDF: {file_path}")
+        
+        return content.strip()
+        
+    except FileNotFoundError:
+        print(f"錯誤: 找不到檔案 {file_path}")
+        return ""
+    except Exception as e:
+        print(f"讀取 PDF 檔案時發生錯誤: {str(e)}")
+        return ""
+
+# 10.2. 通用檔案讀取函式
+def read_file(file_path: str) -> str:
+    """
+    根據檔案副檔名讀取檔案內容
+    
+    Args:
+        file_path: 檔案路徑
+    
+    Returns:
+        檔案內容
+    """
+    file_extension = os.path.splitext(file_path)[1].lower()
+    
+    if file_extension == '.pdf':
+        return read_pdf_file(file_path)
+    elif file_extension == '.txt':
+        return read_text_file(file_path)
+    else:
+        print(f"不支援的檔案格式: {file_extension}")
+        return ""
+
 # 11. 儲存到 Pinecone 函式
 def store_to_pinecone(index, chunks: List[str], embeddings: List[List[float]], 
                      metadata_list: List[Dict[str, Any]] = None):
@@ -162,17 +228,17 @@ def store_to_pinecone(index, chunks: List[str], embeddings: List[List[float]],
             print(f"上傳批次時發生錯誤: {str(e)}")
 
 # 12. 主要處理函式
-def process_text_file(file_path: str, chunk_size: int = 500, chunk_overlap: int = 50):
+def process_file(file_path: str, chunk_size: int = 500, chunk_overlap: int = 50):
     """
-    處理文字檔案的主要函式
+    處理檔案的主要函式（支援 TXT 和 PDF）
     
     Args:
-        file_path: 文字檔案路徑
+        file_path: 檔案路徑
         chunk_size: 分塊大小
         chunk_overlap: 分塊重疊
     """
     print("="*50)
-    print("開始處理文字檔案...")
+    print("開始處理檔案...")
     print("="*50)
     
     # 創建或連接索引
@@ -181,9 +247,9 @@ def process_text_file(file_path: str, chunk_size: int = 500, chunk_overlap: int 
         print("無法創建或連接到 Pinecone 索引，程式終止")
         return
     
-    # 讀取文字檔案
+    # 讀取檔案
     print(f"正在讀取檔案: {file_path}")
-    text_content = read_text_file(file_path)
+    text_content = read_file(file_path)
     if not text_content:
         print("檔案內容為空或讀取失敗")
         return

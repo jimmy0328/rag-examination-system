@@ -7,7 +7,7 @@
 import os
 import sys
 from dotenv import load_dotenv
-from vectorStore import process_text_file, create_or_connect_index
+from vectorStore import process_file, create_or_connect_index
 from pinecone import Pinecone
 
 def clear_index():
@@ -82,18 +82,14 @@ def main():
     # 檢查是否有文件需要處理
     files_to_process = []
     
-    # 檢查 db.txt
-    if os.path.exists('data/db.txt'):
-        files_to_process.append('data/db.txt')
-    
-    # 檢查其他 .txt 文件
+    # 檢查支援的文件格式 (.txt 和 .pdf)
     for file in os.listdir('data'):
-        if file.endswith('.txt') and file != 'db.txt':
+        if file.endswith(('.txt', '.pdf')):
             files_to_process.append(os.path.join('data', file))
     
     if not files_to_process:
-        print("❌ 沒有找到任何 .txt 文件可以處理")
-        print("請將您的文件放在 data/ 目錄中")
+        print("❌ 沒有找到任何支援的文件可以處理")
+        print("請將您的 .txt 或 .pdf 文件放在 data/ 目錄中")
         return
     
     print(f"📁 找到 {len(files_to_process)} 個文件需要處理:")
@@ -112,7 +108,7 @@ def main():
         print("-" * 40)
         
         try:
-            process_text_file(file, chunk_size=500, chunk_overlap=50)
+            process_file(file, chunk_size=500, chunk_overlap=50)
             print(f"✅ {file} 處理完成")
         except Exception as e:
             print(f"❌ 處理 {file} 時發生錯誤: {str(e)}")

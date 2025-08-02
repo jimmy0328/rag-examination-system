@@ -125,12 +125,19 @@ GEMINI_API_KEY=your_actual_gemini_api_key
 
 #### 4. 準備向量資料庫
 
-使用 `vectorStore.py` 將您的文件上傳到 Pinecone：
+使用 `init_db.py` 將您的文件上傳到 Pinecone：
+
+```bash
+# 執行初始化腳本
+python init_db.py
+```
+
+或手動處理單個文件：
 
 ```python
 # 在 Python 中執行
-from vectorStore import process_text_file
-process_text_file('your_document.txt')
+from vectorStore import process_file
+process_file('your_document.txt')  # 支援 .txt 和 .pdf
 ```
 
 #### 5. 啟動應用程式
@@ -153,14 +160,14 @@ python run.py
 ### 2. 線上閱讀中心
 
 1. **訪問閱讀頁面** 點擊導航欄中的「閱讀中心」
-2. **選擇教材** 從下拉選單中選擇要閱讀的教材
+2. **選擇教材** 從下拉選單中選擇要閱讀的教材（支援 .txt 和 .pdf 格式）
 3. **開始閱讀** 系統會載入並顯示教材內容
 4. **搜尋功能** 使用搜尋框快速找到特定內容
 
 ### 3. 智能考試系統
 
 1. **訪問考試頁面** 點擊導航欄中的「考試系統」
-2. **選擇教材** 從下拉選單中選擇要出題的教材
+2. **選擇教材** 從下拉選單中選擇要出題的教材（支援 .txt 和 .pdf 格式）
 3. **設定題數** 選擇要生成的題目數量（預設5題）
 4. **生成題目** 點擊「生成考試」按鈕
 5. **開始作答** 系統會顯示題目，您可以開始作答
@@ -206,7 +213,7 @@ python run.py
   ```json
   {
     "success": true,
-    "files": ["歷史第一冊.txt", "地理第一冊.txt"]
+    "files": ["歷史第一冊.txt", "地理第一冊.txt", "教材.pdf"]
   }
   ```
 
@@ -243,13 +250,13 @@ python run.py
 
 #### 讀取教材內容
 - **POST** `/read/content`
-- **請求體**: `{"file_name": "歷史第一冊.txt"}`
+- **請求體**: `{"file_name": "教材.pdf"}`
 - **回應**:
   ```json
   {
     "success": true,
     "content": "教材內容...",
-    "file_name": "歷史第一冊.txt"
+    "file_name": "教材.pdf"
   }
   ```
 
@@ -298,7 +305,8 @@ rag-examination-system/
 │       └── read.js       # 閱讀中心 JavaScript
 └── data/
     ├── 歷史第一冊.txt     # 歷史教材資料
-    └── 地理第一冊.txt     # 地理教材資料
+    ├── 地理第一冊.txt     # 地理教材資料
+    └── 教材.pdf          # PDF 教材資料（支援）
 ```
 
 ## 技術棧
@@ -307,7 +315,7 @@ rag-examination-system/
 - **向量資料庫**: Pinecone
 - **AI 模型**: Google Gemini
 - **嵌入模型**: Sentence Transformers
-
+- **PDF 處理**: PyPDF2, pdfplumber
 - **前端**: HTML5, CSS3, JavaScript (ES6+)
 - **UI 框架**: Bootstrap 5
 - **圖示**: Font Awesome
@@ -387,6 +395,8 @@ FLASK_ENV=testing python app.py
 - 支援多種題型（選擇題、填空題、簡答題、是非題）
 - 自動評分和成績統計
 - 完整的 Docker 容器化部署方案
+- 新增 PDF 文件支援（閱讀和考試系統）
+- 支援 PDF 內容載入到向量資料庫
 
 ### v1.2.0
 - 新增檔案讀取功能

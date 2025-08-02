@@ -83,12 +83,18 @@ class ReadingSystem {
     createFileItem(file) {
         const div = document.createElement('div');
         div.className = 'file-item';
+        
+        // 根據文件類型選擇圖標和顯示名稱
+        const isPdf = file.toLowerCase().endsWith('.pdf');
+        const icon = isPdf ? 'fas fa-file-pdf text-danger' : 'fas fa-file-text text-primary';
+        const displayName = file.replace(/\.(txt|pdf)$/i, '');
+        
         div.innerHTML = `
             <div class="d-flex align-items-center">
-                <i class="fas fa-file-text text-primary me-2"></i>
+                <i class="${icon} me-2"></i>
                 <div>
-                    <h6 class="mb-0">${file.replace('.txt', '')}</h6>
-                    <small class="text-muted">點擊閱讀</small>
+                    <h6 class="mb-0">${displayName}</h6>
+                    <small class="text-muted">${isPdf ? 'PDF 文件' : '文字文件'} - 點擊閱讀</small>
                 </div>
             </div>
         `;
