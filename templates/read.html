@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>閱讀中心 - RAG 智能問答系統</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+    <style>
+        .reading-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+        }
+        
+        .file-list {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 10px;
+            border-left: 4px solid #17a2b8;
+        }
+        
+        .file-item {
+            background: #fff;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .file-item:hover {
+            border-color: #17a2b8;
+            box-shadow: 0 2px 8px rgba(23, 162, 184, 0.2);
+        }
+        
+        .file-item.active {
+            border-color: #17a2b8;
+            background: #e3f2fd;
+        }
+        
+        .content-display {
+            background: #fff;
+            border: 1px solid #e9ecef;
+            border-radius: 10px;
+            padding: 2rem;
+            max-height: 600px;
+            overflow-y: auto;
+            line-height: 1.8;
+            font-size: 1.1rem;
+        }
+        
+        .content-display h1, .content-display h2, .content-display h3 {
+            color: #17a2b8;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+        }
+        
+        .content-display p {
+            margin-bottom: 1rem;
+            text-align: justify;
+        }
+        
+        .search-box {
+            background: #fff;
+            border: 1px solid #e9ecef;
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .back-btn {
+            position: fixed;
+            top: 2rem;
+            left: 2rem;
+            z-index: 1000;
+        }
+        
+        .reading-controls {
+            background: #fff;
+            border: 1px solid #e9ecef;
+            border-radius: 10px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .font-size-control {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .font-size-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 1px solid #17a2b8;
+            background: #fff;
+            color: #17a2b8;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .font-size-btn:hover {
+            background: #17a2b8;
+            color: #fff;
+        }
+        
+        .font-size-btn.active {
+            background: #17a2b8;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <!-- 返回按鈕 -->
+        <a href="/" class="btn btn-outline-primary back-btn">
+            <i class="fas fa-arrow-left"></i> 返回首頁
+        </a>
+        
+        <div class="row justify-content-center">
+            <div class="col-lg-12">
+                <!-- 標題區域 -->
+                <div class="text-center mb-4">
+                    <h1 class="text-white">
+                        <i class="fas fa-book-open"></i> 閱讀中心
+                    </h1>
+                    <p class="text-white-50">瀏覽和閱讀資料庫中的內容</p>
+                </div>
+                
+                <!-- 搜尋區域 -->
+                <div class="reading-container">
+                    <div class="search-box">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <input type="text" 
+                                       class="form-control" 
+                                       id="searchInput" 
+                                       placeholder="搜尋內容關鍵字...">
+                            </div>
+                            <div class="col-md-4">
+                                <button class="btn btn-primary w-100" id="searchBtn">
+                                    <i class="fas fa-search"></i> 搜尋
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <!-- 檔案列表 -->
+                        <div class="col-md-4">
+                            <div class="reading-container">
+                                <h3><i class="fas fa-folder-open"></i> 檔案列表</h3>
+                                <div class="file-list" id="fileList">
+                                    <div class="text-center">
+                                        <div class="spinner-border text-primary" role="status">
+                                            <span class="visually-hidden">載入中...</span>
+                                        </div>
+                                        <p class="mt-2">載入檔案中...</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 內容顯示 -->
+                        <div class="col-md-8">
+                            <div class="reading-container">
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <h3><i class="fas fa-file-text"></i> 內容閱讀</h3>
+                                    <div class="reading-controls">
+                                        <div class="font-size-control">
+                                            <span>字體大小：</span>
+                                            <button class="font-size-btn" data-size="small">小</button>
+                                            <button class="font-size-btn active" data-size="medium">中</button>
+                                            <button class="font-size-btn" data-size="large">大</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="content-display" id="contentDisplay">
+                                    <div class="text-center text-muted">
+                                        <i class="fas fa-file-alt fa-3x mb-3"></i>
+                                        <p>請選擇左側檔案開始閱讀</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 錯誤訊息 -->
+                <div class="alert alert-danger" id="errorSection" style="display: none;">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <span id="errorMessage"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ url_for('static', filename='js/read.js') }}"></script>
+</body>
+</html> 

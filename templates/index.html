@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RAG 智能問答系統</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <!-- 側邊欄 -->
+            <div class="col-md-3 sidebar">
+                <div class="sidebar-content">
+                    <div class="logo-section">
+                        <i class="fas fa-robot logo-icon"></i>
+                        <h2>閱讀與考試系統</h2>
+                        <p class="text-muted">智能問答平台</p>
+                    </div>
+                    
+                    <div class="status-section">
+                        <div class="status-item">
+                            <i class="fas fa-database status-icon"></i>
+                            <span>Pinecone 向量資料庫</span>
+                            <div class="status-indicator" id="pinecone-status">
+                                <i class="fas fa-circle"></i>
+                            </div>
+                        </div>
+                        <div class="status-item">
+                            <i class="fas fa-brain status-icon"></i>
+                            <span>Gemini AI 模型</span>
+                            <div class="status-indicator" id="gemini-status">
+                                <i class="fas fa-circle"></i>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="info-section">
+                        <h6><i class="fas fa-info-circle"></i> 使用說明</h6>
+                        <ul>
+                            <li>輸入您的問題</li>
+                            <li>系統會搜尋相關資料</li>
+                            <li>AI 會根據資料庫內容回答</li>
+                            <li>如果資料庫中沒有相關資訊，會明確告知</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 主要內容區 -->
+            <div class="col-md-9 main-content">
+                <div class="content-wrapper">
+                    <!-- 標題區域 -->
+                    <div class="header-section">
+                        <h1><i class="fas fa-search"></i> 智能問答系統</h1>
+                        <p class="subtitle">基於 RAG (Retrieval-Augmented Generation) 技術的智能問答平台</p>
+                    </div>
+                    
+                    <!-- 查詢區域 -->
+                    <div class="query-section">
+                        <div class="query-container">
+                            <div class="input-group">
+                                <input type="text" 
+                                       class="form-control query-input" 
+                                       id="queryInput" 
+                                       placeholder="請輸入您的問題..."
+                                       autocomplete="off">
+                                <button class="btn btn-primary query-btn" id="queryBtn">
+                                    <i class="fas fa-paper-plane"></i>
+                                    查詢
+                                </button>
+                            </div>
+                            <!-- 功能按鈕區域 -->
+                            <div class="function-buttons mt-3">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <a href="/exam" class="btn btn-success btn-lg w-100">
+                                            <i class="fas fa-graduation-cap"></i>
+                                            進入考試院
+                                        </a>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <a href="/read" class="btn btn-info btn-lg w-100">
+                                            <i class="fas fa-book-open"></i>
+                                            開始閱讀
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- 資料庫狀態顯示 -->
+                            <div class="database-info mt-3">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h6><i class="fas fa-database"></i> 資料庫狀態</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <div id="databaseStatusInfo">
+                                            <div class="spinner-border spinner-border-sm text-primary" role="status">
+                                                <span class="visually-hidden">載入中...</span>
+                                            </div>
+                                            <span class="ms-2">檢查資料庫狀態中...</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 載入動畫 -->
+                    <div class="loading-section" id="loadingSection" style="display: none;">
+                        <div class="loading-container">
+                            <div class="spinner-border text-primary" role="status">
+                                <span class="visually-hidden">載入中...</span>
+                            </div>
+                            <p class="loading-text">正在搜尋相關資料並生成回答...</p>
+                        </div>
+                    </div>
+                    
+                    <!-- 結果區域 -->
+                    <div class="results-section" id="resultsSection" style="display: none;">
+                        <div class="result-container">
+                            <!-- 查詢問題 -->
+                            <div class="query-display">
+                                <h5><i class="fas fa-question-circle"></i> 您的問題</h5>
+                                <p id="displayQuery"></p>
+                            </div>
+                            
+                            <!-- AI 回答 -->
+                            <div class="answer-display">
+                                <div class="answer-header">
+                                    <h5><i class="fas fa-robot"></i> AI 回答</h5>
+                                    <button class="btn btn-outline-primary btn-sm" id="playAudioBtn" style="display: none;">
+                                        <i class="fas fa-volume-up"></i> 播放語音
+                                    </button>
+                                </div>
+                                <div class="answer-content" id="answerContent"></div>
+                            </div>
+                            
+                            <!-- 相關資料 -->
+                            <div class="context-display" id="contextDisplay" style="display: none;">
+                                <h5><i class="fas fa-book"></i> 相關資料來源</h5>
+                                <div class="context-content" id="contextContent"></div>
+                            </div>
+                            
+                            <!-- 資料庫狀態 -->
+                            <div class="database-status" id="databaseStatus">
+                                <div class="status-badge">
+                                    <i class="fas fa-database"></i>
+                                    <span id="statusText">資料庫狀態</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 錯誤訊息 -->
+                    <div class="error-section" id="errorSection" style="display: none;">
+                        <div class="alert alert-danger" role="alert">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <span id="errorMessage"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html> 

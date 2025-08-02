@@ -1,0 +1,65 @@
+# Git 相關
+.git
+.gitignore
+
+# Python 相關
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.Python
+env
+pip-log.txt
+pip-delete-this-directory.txt
+.tox
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.log
+.git
+.mypy_cache
+.pytest_cache
+.hypothesis
+
+# 虛擬環境
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+
+# IDE 相關
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# 作業系統相關
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Docker 相關
+Dockerfile
+docker-compose.yml
+.dockerignore
+
+# 環境變數文件
+.env
+.env.local
+.env.*.local
+
+# 日誌文件
+*.log
+
+# 臨時文件
+tmp/
+temp/ 

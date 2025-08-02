@@ -1,0 +1,29 @@
+version: "3.8"
+
+services:
+  rag-app:
+    build: .
+    container_name: rag-final-report-dev
+    ports:
+      - "5002:5002"
+    environment:
+      - FLASK_ENV=development
+      - FLASK_DEBUG=True
+      - APP_HOST=0.0.0.0
+      - APP_PORT=5002
+    env_file:
+      - .env
+    volumes:
+      # 掛載整個專案目錄以支援熱重載
+      - .:/app
+      # 排除 Python 快取目錄
+      - /app/__pycache__
+      - /app/.pytest_cache
+      - /app/.mypy_cache
+    restart: unless-stopped
+    networks:
+      - rag-network-dev
+
+networks:
+  rag-network-dev:
+    driver: bridge

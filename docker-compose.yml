@@ -1,0 +1,47 @@
+version: "3.8"
+
+services:
+  rag-app:
+    build: .
+    container_name: rag-final-report
+    ports:
+      - "5002:5002"
+    environment:
+      - FLASK_ENV=production
+      - FLASK_DEBUG=False
+      - APP_HOST=0.0.0.0
+      - APP_PORT=5002
+    env_file:
+      - .env
+    volumes:
+      # 掛載 data 目錄以持久化資料
+      - ./data:/app/data
+      # 掛載靜態文件（可選）
+      - ./static:/app/static
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5002/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    networks:
+      - rag-network
+
+  # 可選：添加 Redis 用於快取（如果需要）
+  # redis:
+  #   image: redis:7-alpine
+  #   container_name: rag-redis
+  #   ports:
+  #     - "6379:6379"
+  #   volumes:
+  #     - redis_data:/data
+  #   restart: unless-stopped
+  #   networks:
+  #     - rag-network
+
+networks:
+  rag-network:
+    driver: bridge
+# volumes:
+#   redis_data:
