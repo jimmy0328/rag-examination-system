@@ -50,8 +50,8 @@ class RAGSystem:
         """初始化 Gemini LLM"""
         try:
             genai.configure(api_key=self.gemini_api_key)
-            # 使用免費的 gemini-1.5-flash 模型
-            self.model = genai.GenerativeModel('gemini-2.0-flash')
+            # 使用免費的 gemini-2.5-flash 模型
+            self.model = genai.GenerativeModel('gemini-2.5-flash')
             print("✅ Gemini LLM 初始化成功")
         except Exception as e:
             print(f"❌ Gemini 初始化失敗: {str(e)}")
