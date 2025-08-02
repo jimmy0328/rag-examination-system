@@ -319,7 +319,7 @@ rag-examination-system/
 - **後端**: Flask, Python
 - **向量資料庫**: Pinecone
 - **AI 模型**: Google Gemini
-- **嵌入模型**: Sentence Transformers
+- **嵌入模型**: sentence-transformers/all-MiniLM-L6-v2
 - **PDF 處理**: PyPDF2, pdfplumber
 - **前端**: HTML5, CSS3, JavaScript (ES6+)
 - **UI 框架**: Bootstrap 5

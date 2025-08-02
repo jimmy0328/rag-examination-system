@@ -45,7 +45,7 @@
 - **後端**: Flask, Python
 - **向量資料庫**: Pinecone
 - **AI 模型**: Google Gemini
-- **嵌入模型**: Sentence Transformers
+- **嵌入模型**: sentence-transformers/all-MiniLM-L6-v2
 
 ---
 

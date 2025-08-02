@@ -28,7 +28,7 @@ pc = Pinecone(api_key=PINECONE_API_KEY)
 
 # 5. 設定索引名稱和維度
 INDEX_NAME = "text-chunks-index"
-DIMENSION = 768  # shibing624/text2vec-base-chinese 的向量維度
+DIMENSION = 384  # sentence-transformers/all-MiniLM-L6-v2 的向量維度
 
 # 6. 創建或連接 Pinecone 索引
 def create_or_connect_index():
@@ -62,7 +62,7 @@ def create_or_connect_index():
 
 # 7. 初始化文字嵌入模型
 print("正在載入嵌入模型...")
-embedding_model = SentenceTransformer('shibing624/text2vec-base-chinese')
+embedding_model = SentenceTransformer('sentence-transformers/all-MiniLM-L6-v2')
 print("嵌入模型載入完成!")
 
 # 8. 文字分塊函式

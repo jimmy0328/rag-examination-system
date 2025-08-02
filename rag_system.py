@@ -61,7 +61,7 @@ class RAGSystem:
         """初始化嵌入模型"""
         try:
             print("正在載入嵌入模型...")
-            self.embedding_model = SentenceTransformer('shibing624/text2vec-base-chinese')
+            self.embedding_model = SentenceTransformer('sentence-transformers/all-MiniLM-L6-v2')
             print("✅ 嵌入模型載入完成")
         except Exception as e:
             print(f"❌ 嵌入模型載入失敗: {str(e)}")
