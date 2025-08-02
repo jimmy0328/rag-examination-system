@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RAG 智能問答系統 - 技術簡報</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reveal.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/theme/white.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/github.min.css">
+    <style>
+        .reveal .slides section {
+            text-align: left;
+        }
+        .reveal h1, .reveal h2, .reveal h3 {
+            color: #2c3e50;
+        }
+        .highlight {
+            background-color: #f39c12;
+            color: white;
+            padding: 2px 6px;
+            border-radius: 3px;
+        }
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-top: 30px;
+        }
+        .feature-item {
+            background: #ecf0f1;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #3498db;
+        }
+        .architecture-diagram {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        .code-block {
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+        }
+        .demo-link {
+            display: inline-block;
+            background: #27ae60;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin: 30px 0;
+        }
+        .stat-item {
+            text-align: center;
+            background: #3498db;
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+        }
+        .stat-number {
+            font-size: 2.5em;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+            <!-- 標題頁 -->
+            <section>
+                <h1>透過 RAG 實現線上閱讀與考試系統</h1>
+                <h3>Retrieval-Augmented Generation 智能問答系統</h3>
+                <p>基於 Flask + Pinecone + Gemini AI</p>
+                <br>
+                <a href="https://d6530614201f.ngrok.app/" class="demo-link" target="_blank">🚀 線上 Demo</a>
+                <br><br>
+                <small>技術簡報 | 2024</small>
+            </section>
+
+            <!-- 專案概述 -->
+            <section>
+                <h2>專案概述</h2>
+                <div class="feature-grid">
+                    <div class="feature-item">
+                        <h4>🔍 智能檢索</h4>
+                        <p>使用 Pinecone 向量資料庫進行語義搜尋</p>
+                    </div>
+                    <div class="feature-item">
+                        <h4>🤖 AI 生成</h4>
+                        <p>整合 Gemini AI 模型生成準確回答</p>
+                    </div>
+                    <div class="feature-item">
+                        <h4>📚 線上閱讀</h4>
+                        <p>提供教材內容的線上閱讀功能</p>
+                    </div>
+                    <div class="feature-item">
+                        <h4>📝 智能考試</h4>
+                        <p>基於教材內容自動生成考試題目</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 系統架構 -->
+            <section>
+                <h2>系統架構</h2>
+                <div class="architecture-diagram">
+                    <pre><code class="text">
+┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
+│   前端介面       │    │   Flask 後端    │     │   外部服務       │
+│   (HTML/CSS/JS) │◄──►│   (Python)      │◄──►│   Pinecone      │
+│                 │    │                 │    │   Gemini AI     │
+└─────────────────┘    └─────────────────┘    └─────────────────┘
+                    </code></pre>
+                </div>
+                <ul>
+                    <li><strong>前端</strong>: HTML5, CSS3, JavaScript (ES6+), Bootstrap 5</li>
+                    <li><strong>後端</strong>: Flask, Python</li>
+                    <li><strong>向量資料庫</strong>: Pinecone</li>
+                    <li><strong>AI 模型</strong>: Google Gemini</li>
+                    <li><strong>嵌入模型</strong>: Sentence Transformers</li>
+                </ul>
+            </section>
+
+            <!-- 核心功能 -->
+            <section>
+                <h2>核心功能展示</h2>
+                <div class="stats">
+                    <div class="stat-item">
+                        <div class="stat-number">3</div>
+                        <div>主要模組</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">4</div>
+                        <div>題型支援</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">100%</div>
+                        <div>自動評分</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- RAG 智能問答 -->
+            <section>
+                <h2>1. RAG 智能問答系統</h2>
+                <ul>
+                    <li>語義搜尋與檢索</li>
+                    <li>AI 生成準確回答</li>
+                    <li>相關資料來源顯示</li>
+                    <li>即時系統狀態監控</li>
+                </ul>
+                <div class="code-block">
+POST /query
+{
+  "query": "您的問題"
+}
+                </div>
+            </section>
+
+            <!-- 線上閱讀中心 -->
+            <section>
+                <h2>2. 線上閱讀中心</h2>
+                <ul>
+                    <li>支援 .txt 和 .pdf 格式</li>
+                    <li>教材內容線上瀏覽</li>
+                    <li>內容搜尋功能</li>
+                    <li>響應式設計</li>
+                </ul>
+                <div class="code-block">
+POST /read/content
+{
+  "file_name": "教材.pdf"
+}
+                </div>
+            </section>
+
+            <!-- 智能考試系統 -->
+            <section>
+                <h2>3. 智能考試系統</h2>
+                <h4>支援題型：</h4>
+                <ul>
+                    <li><span class="highlight">選擇題</span> - 四選一，自動評分</li>
+                    <li><span class="highlight">填空題</span> - 模糊匹配評分</li>
+                    <li><span class="highlight">簡答題</span> - AI 智能評分</li>
+                    <li><span class="highlight">是非題</span> - 自動評分</li>
+                </ul>
+            </section>
+
+            <!-- 考試流程 -->
+            <section>
+                <h2>考試流程</h2>
+                <ol>
+                    <li>選擇教材（支援 .txt 和 .pdf）</li>
+                    <li>設定題目數量（預設 5 題）</li>
+                    <li>AI 自動生成題目</li>
+                    <li>學生作答</li>
+                    <li>自動評分與解析</li>
+                    <li>成績統計與分析</li>
+                </ol>
+            </section>
+
+            <!-- API 端點 -->
+            <section>
+                <h2>主要 API 端點</h2>
+                <div class="code-block">
+# RAG 查詢
+POST /query
+
+# 考試系統
+GET  /exam/files
+POST /exam/generate
+POST /exam/grade
+
+# 閱讀中心
+POST /read/content
+
+# 健康檢查
+GET  /health
+                </div>
+            </section>
+
+            <!-- 技術特色 -->
+            <section>
+                <h2>技術特色</h2>
+                <ul>
+                    <li><strong>向量化檢索</strong>: 使用 Pinecone 進行語義搜尋</li>
+                    <li><strong>AI 驅動</strong>: Gemini AI 生成回答和題目</li>
+                    <li><strong>多格式支援</strong>: .txt, .pdf 文件處理</li>
+                    <li><strong>容器化部署</strong>: 完整的 Docker Compose 方案</li>
+                    <li><strong>現代化 UI</strong>: Bootstrap 5 + 響應式設計</li>
+                    <li><strong>安全配置</strong>: 環境變數管理 API 金鑰</li>
+                </ul>
+            </section>
+
+            <!-- 部署方案 -->
+            <section>
+                <h2>部署方案</h2>
+                <h4>Docker Compose（推薦）</h4>
+                <div class="code-block">
+# 啟動服務
+./docker-start.sh
+
+# 或手動執行
+docker-compose up -d
+
+# 訪問應用
+http://localhost:5002
+                </div>
+                <h4>本地安裝</h4>
+                <div class="code-block">
+pip install -r requirements.txt
+python run.py
+                </div>
+            </section>
+
+            <!-- 專案結構 -->
+            <section>
+                <h2>專案結構</h2>
+                <div class="code-block">
+rag-examination-system/
+├── app.py                 # Flask 主應用程式
+├── rag_system.py          # RAG 系統核心邏輯
+├── vectorStore.py         # 向量資料庫操作
+├── templates/             # HTML 模板
+├── static/               # CSS/JS 靜態資源
+├── data/                 # 教材資料
+├── Dockerfile            # Docker 配置
+└── docker-compose.yml    # 容器編排
+                </div>
+            </section>
+
+            <!-- 使用場景 -->
+            <section>
+                <h2>適用場景</h2>
+                <div class="feature-grid">
+                    <div class="feature-item">
+                        <h4>🏫 教育機構</h4>
+                        <p>線上教材閱讀與考試</p>
+                    </div>
+                    <div class="feature-item">
+                        <h4>📚 圖書館</h4>
+                        <p>文獻檢索與問答</p>
+                    </div>
+                    <div class="feature-item">
+                        <h4>🏢 企業培訓</h4>
+                        <p>員工培訓與考核</p>
+                    </div>
+                    <div class="feature-item">
+                        <h4>🔬 研究機構</h4>
+                        <p>文獻智能問答</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 未來發展 -->
+            <section>
+                <h2>未來發展方向</h2>
+                <ul>
+                    <li>支援更多文件格式（Word, PowerPoint）</li>
+                    <li>多語言支援</li>
+                    <li>用戶權限管理</li>
+                    <li>考試結果分析與報表</li>
+                    <li>移動端適配優化</li>
+                    <li>API 速率限制與安全增強</li>
+                </ul>
+            </section>
+
+            <!-- 結尾 -->
+            <section>
+                <h2>謝謝聆聽</h2>
+                <h3>RAG 智能問答系統</h3>
+                <p>基於 Flask + Pinecone + Gemini AI</p>
+                <br>
+                <a href="https://d6530614201f.ngrok.app/" class="demo-link" target="_blank">🚀 線上 Demo</a>
+                <br><br>
+                <small>技術簡報 | 2024</small>
+            </section>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reveal.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/plugin/highlight/highlight.min.js"></script>
+    <script>
+        Reveal.initialize({
+            hash: true,
+            transition: 'slide',
+            transitionSpeed: 'default',
+            backgroundTransition: 'fade',
+            plugins: [RevealHighlight],
+            controls: true,
+            progress: true,
+            center: true,
+            touch: true,
+            loop: false,
+            rtl: false,
+            navigationMode: 'default',
+            shuffle: false,
+            fragments: true,
+            fragmentInURL: false,
+            embedded: false,
+            help: true,
+            showNotes: false,
+            autoPlayMedia: null,
+            preloadIframes: null,
+            autoSlide: 0,
+            autoSlideStoppable: true,
+            autoSlideMethod: Reveal.navigateNext,
+            mouseWheel: false,
+            hideInactiveCursor: true,
+            hideCursorTime: 5000,
+            previewLinks: false,
+            postMessage: true,
+            postMessageEvents: false,
+            focusBodyOnPageVisibilityChange: true,
+            transition: 'slide',
+            transitionSpeed: 'default',
+            backgroundTransition: 'fade',
+            viewDistance: 3,
+            display: 'block',
+            hideEmptyElements: true,
+            rtl: false,
+            center: true,
+            touch: true,
+            loop: false,
+            shuffle: false,
+            fragments: true,
+            embedded: false,
+            help: true,
+            showNotes: false,
+            autoPlayMedia: null,
+            preloadIframes: null,
+            autoSlide: 0,
+            autoSlideStoppable: true,
+            autoSlideMethod: Reveal.navigateNext,
+            mouseWheel: false,
+            hideInactiveCursor: true,
+            hideCursorTime: 5000,
+            previewLinks: false,
+            postMessage: true,
+            postMessageEvents: false,
+            focusBodyOnPageVisibilityChange: true,
+            viewDistance: 3,
+            display: 'block',
+            hideEmptyElements: true
+        });
+    </script>
+</body>
+</html> 
