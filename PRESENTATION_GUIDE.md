@@ -70,7 +70,6 @@ echo "## 📊 [專案簡報](PRESENTATION.md)" >> README.md
 |------|------|------|
 | `slides.html` | Reveal.js 技術簡報 | 專業簡報效果，支援動畫 |
 | `PRESENTATION.md` | Markdown 簡報 | 簡單易讀，GitHub 原生支援 |
-| `index.html` | 專案展示頁面 | 美觀響應式設計 |
 | `.github/workflows/deploy.yml` | 自動部署配置 | GitHub Actions 自動部署 |
 
 ## 🎨 自訂化建議
