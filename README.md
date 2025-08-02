@@ -4,6 +4,12 @@
 
 DEMO: https://d6530614201f.ngrok.app/
 
+## 📊 專案簡報
+
+- **技術簡報**: [slides.html](slides.html) - Reveal.js 專業簡報
+- **Markdown 簡報**: [PRESENTATION.md](PRESENTATION.md) - 文檔式簡報
+- **專案展示頁面**: [index.html](index.html) - 響應式專案展示
+
 
 ## 功能特色
 

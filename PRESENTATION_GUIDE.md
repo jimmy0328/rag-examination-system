@@ -5,11 +5,12 @@
 ## 🎯 方案選擇
 
 ### 方案一：Reveal.js 技術簡報（推薦）
-**檔案：** `presentation.html`
+**檔案：** `slides.html`
 - ✅ 專業的簡報效果
 - ✅ 支援動畫和過渡效果
 - ✅ 可在 GitHub Pages 上直接瀏覽
 - ✅ 適合技術展示和演講
+- ✅ 包含返回專案頁面連結
 
 ### 方案二：Markdown 簡報
 **檔案：** `PRESENTATION.md`
@@ -42,8 +43,9 @@
 
 #### 選項 A：使用 Reveal.js 簡報
 ```bash
-# 將 presentation.html 重命名為 index.html
-mv presentation.html index.html
+# 直接訪問 slides.html
+# 或將 slides.html 重命名為 index.html
+mv slides.html index.html
 ```
 
 #### 選項 B：使用專案展示頁面
@@ -66,7 +68,7 @@ echo "## 📊 [專案簡報](PRESENTATION.md)" >> README.md
 
 | 檔案 | 用途 | 特點 |
 |------|------|------|
-| `presentation.html` | Reveal.js 技術簡報 | 專業簡報效果，支援動畫 |
+| `slides.html` | Reveal.js 技術簡報 | 專業簡報效果，支援動畫 |
 | `PRESENTATION.md` | Markdown 簡報 | 簡單易讀，GitHub 原生支援 |
 | `index.html` | 專案展示頁面 | 美觀響應式設計 |
 | `.github/workflows/deploy.yml` | 自動部署配置 | GitHub Actions 自動部署 |
