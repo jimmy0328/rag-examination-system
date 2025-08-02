@@ -42,6 +42,11 @@ def read():
     """閱讀中心頁面"""
     return render_template('read.html')
 
+@app.route('/slides')
+def slides():
+    """技術簡報頁面"""
+    return render_template('slides.html')
+
 @app.route('/query', methods=['POST'])
 def query():
     """處理查詢請求"""

@@ -90,7 +90,7 @@
     </style>
 </head>
 <body>
-    <a href="index.html" class="back-link">← 返回專案頁面</a>
+    <a href="/" class="back-link">← 返回專案頁面</a>
     
     <div class="reveal">
         <div class="slides">
@@ -98,11 +98,9 @@
             <section>
                 <h1>透過 RAG 實現線上閱讀與考試系統</h1>
                 <p>基於 Flask + Pinecone + Gemini AI</p>
-                <p>使用工具 cursor + claude code 協助完成</p>
+                <p>使用 cursor + claude code 協助完成</p>
                 <br>
-                <a href="https://d6530614201f.ngrok.app/" class="demo-link" target="_blank">🚀 線上 Demo</a>
                 <br><br>
-                <small>技術簡報 | 2024</small>
             </section>
 
             <!-- 專案概述 -->
@@ -134,38 +132,19 @@
                 <div class="architecture-diagram">
                     <pre><code class="text">
 ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
-│   前端介面       │    │   Flask 後端     │    │   外部服務       │
+│   前端介面       │    │   Flask 後端    │     │   外部服務       │
 │   (HTML/CSS/JS) │◄──►│   (Python)      │◄──►│   Pinecone      │
 │                 │    │                 │    │   Gemini AI     │
 └─────────────────┘    └─────────────────┘    └─────────────────┘
                     </code></pre>
                 </div>
                 <ul>
-                    <li><strong>前端</strong>: HTML5, CSS3, JavaScript (ES6+), Bootstrap 5</li>
+                    <li><strong>前端</strong>: HTML5, CSS3, JavaScript, Bootstrap 5</li>
                     <li><strong>後端</strong>: Flask, Python</li>
                     <li><strong>向量資料庫</strong>: Pinecone</li>
                     <li><strong>AI 模型</strong>: Google Gemini</li>
                     <li><strong>嵌入模型</strong>: Sentence Transformers</li>
                 </ul>
-            </section>
-
-            <!-- 核心功能 -->
-            <section>
-                <h2>核心功能展示</h2>
-                <div class="stats">
-                    <div class="stat-item">
-                        <div class="stat-number">3</div>
-                        <div>主要模組</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-number">4</div>
-                        <div>題型支援</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-number">100%</div>
-                        <div>自動評分</div>
-                    </div>
-                </div>
             </section>
 
             <!-- RAG 智能問答 -->
@@ -177,7 +156,6 @@
                     <li>相關資料來源顯示</li>
                     <li>即時系統狀態監控</li>
                 </ul>
-
             </section>
 
             <!-- 線上閱讀中心 -->
@@ -235,36 +213,16 @@
                 <h4>Docker Compose（推薦）</h4>
                 <div class="code-block">
 # 啟動服務
-./docker-start.sh
-
-# 或手動執行
 docker-compose up -d
-
-# 訪問應用
-http://localhost:5002
                 </div>
+                <br>
                 <h4>本地安裝</h4>
                 <div class="code-block">
-pip install -r requirements.txt
-python run.py
+<p>pip install -r requirements.txt</p>
+<p>python run.py</p>
                 </div>
             </section>
 
-            <!-- 專案結構 -->
-            <section>
-                <h2>專案結構</h2>
-                <div class="code-block">
-rag-examination-system/
-├── app.py                 # Flask 主應用程式
-├── rag_system.py          # RAG 系統核心邏輯
-├── vectorStore.py         # 向量資料庫操作
-├── templates/             # HTML 模板
-├── static/               # CSS/JS 靜態資源
-├── data/                 # 教材資料
-├── Dockerfile            # Docker 配置
-└── docker-compose.yml    # 容器編排
-                </div>
-            </section>
 
             <!-- 使用場景 -->
             <section>
@@ -300,17 +258,6 @@ rag-examination-system/
                     <li>移動端適配優化</li>
                     <li>API 速率限制與安全增強</li>
                 </ul>
-            </section>
-
-            <!-- 結尾 -->
-            <section>
-                <h2>謝謝聆聽</h2>
-                <h3>RAG 智能問答系統</h3>
-                <p>基於 Flask + Pinecone + Gemini AI</p>
-                <br>
-                <a href="https://d6530614201f.ngrok.app/" class="demo-link" target="_blank">🚀 線上 Demo</a>
-                <br><br>
-                <small>技術簡報 | 2024</small>
             </section>
         </div>
     </div>
